@@ -4,7 +4,7 @@ services:
     image: ${PROJECT_NAME}-${BACKEND_PROJECT_NAME}:latest
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.${BACKEND_PROJECT_NAME}.rule=Host(`localhost`) && PathPrefix(`/api-pdf-reader`)"
+      - "traefik.http.routers.${BACKEND_PROJECT_NAME}.rule=Host(`${HOST}`) && PathPrefix(`${BACK_PATH_PREFIX}`)"
       - "traefik.http.routers.${BACKEND_PROJECT_NAME}.entrypoints=websecure"  # Use HTTPS
       - "traefik.http.routers.${BACKEND_PROJECT_NAME}.tls.certresolver=mytlschallenge"  # Use Let's Encrypt
       - "traefik.http.services.${BACKEND_PROJECT_NAME}.loadbalancer.server.port=${BACKEND_PORT}"
@@ -25,8 +25,8 @@ services:
         VUE_APP_LOGIN_PATH: http://localhost:8180
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.${FRONTEND_PROJECT_NAME}.rule=Host(`localhost`) && PathPrefix(`/app`)"
-      - "traefik.http.middlewares.${FRONTEND_PROJECT_NAME}-stripprefix.stripprefix.prefixes=/app"
+      - "traefik.http.routers.${FRONTEND_PROJECT_NAME}.rule=Host(`${HOST}`) && PathPrefix(`${FRONT_PATH_PREFIX}`)"
+      - "traefik.http.middlewares.${FRONTEND_PROJECT_NAME}-stripprefix.stripprefix.prefixes=${FRONT_PATH_PREFIX}"
       - "traefik.http.routers.${FRONTEND_PROJECT_NAME}.middlewares=${FRONTEND_PROJECT_NAME}-stripprefix@docker"
       - "traefik.http.routers.${FRONTEND_PROJECT_NAME}.entrypoints=websecure"  # Use HTTPS
       - "traefik.http.routers.${FRONTEND_PROJECT_NAME}.tls.certresolver=mytlschallenge"  # Use Let's Encrypt
