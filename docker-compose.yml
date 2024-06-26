@@ -1,0 +1,40 @@
+version: '3.8'
+services:
+  app:
+    image: ${PROJECT_NAME}-${BACKEND_PROJECT_NAME}:latest
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.${BACKEND_PROJECT_NAME}.rule=Host(`localhost`) && PathPrefix(`/api-pdf-reader`)"
+      - "traefik.http.routers.${BACKEND_PROJECT_NAME}.entrypoints=websecure"  # Use HTTPS
+      - "traefik.http.routers.${BACKEND_PROJECT_NAME}.tls.certresolver=mytlschallenge"  # Use Let's Encrypt
+      - "traefik.http.services.${BACKEND_PROJECT_NAME}.loadbalancer.server.port=${BACKEND_PORT}"
+    volumes:
+      - .:/app/backend
+    environment:
+      - NAME=World
+      - ALLOWED_ORIGINS=${ALLOWED_ORIGINS}
+      - NUMBER_OF_WORKERS=${NUMBER_OF_WORKERS}
+    networks:
+      - chatbot_pdfreader_network
+
+  pdf_reader_app_client:
+    build:
+      context: ./app_frontend/frontend/pdf_reader_app_client
+      args:
+        VUE_APP_BACKEND_PATH: https://localhost/api-pdf-reader
+        VUE_APP_LOGIN_PATH: http://localhost:8180
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.${FRONTEND_PROJECT_NAME}.rule=Host(`localhost`) && PathPrefix(`/app`)"
+      - "traefik.http.middlewares.${FRONTEND_PROJECT_NAME}-stripprefix.stripprefix.prefixes=/app"
+      - "traefik.http.routers.${FRONTEND_PROJECT_NAME}.middlewares=${FRONTEND_PROJECT_NAME}-stripprefix@docker"
+      - "traefik.http.routers.${FRONTEND_PROJECT_NAME}.entrypoints=websecure"  # Use HTTPS
+      - "traefik.http.routers.${FRONTEND_PROJECT_NAME}.tls.certresolver=mytlschallenge"  # Use Let's Encrypt
+      - "traefik.http.services.${FRONTEND_PROJECT_NAME}.loadbalancer.server.port=80"
+    networks:
+      - chatbot_pdfreader_network
+
+
+networks:
+  chatbot_pdfreader_network:
+    external: true

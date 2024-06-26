@@ -1,0 +1,2 @@
+sudo docker-compose --env-file .env build pdf_reader_app_client
+sudo docker-compose --env-file .env up -d
