@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { saveAs } from 'file-saver';
 import { Document, Packer, Paragraph, TextRun } from 'docx';
-import keycloak from './keycloak';
+import keycloak from '../keycloak';
 
 const backend_path = process.env.VUE_APP_BACKEND_PATH;
 //const backend_path = 'http://localhost:8000/api';//process.env.VUE_APP_BACKEND_PATH;
@@ -28,6 +28,19 @@ export default {
       highlighted_pdf: null,
       selectedLanguage: 'srp'
     };
+  },
+  mounted() {
+    console.log('MOUNTED HOME.');
+    const fragment = new URLSearchParams(window.location.hash.substring(1));
+    if (fragment.has('state') || fragment.has('code')) {
+      console.log('Cleaning up URL...');
+      //const cleanUri = window.location.origin + window.location.pathname;
+      //window.history.replaceState({}, document.title, cleanUri);
+      window.history.replaceState({}, document.title, "/ocr-home");
+      //console.log('URL cleaned:', cleanUri);
+    } else {
+      console.log('No URL cleanup needed.');
+    }
   },
   computed: {
     formattedAlertMessage() {

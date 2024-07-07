@@ -59,10 +59,10 @@ RUN wget -O $TESSDATA_PREFIX/srp_latn.traineddata https://github.com/tesseract-o
 RUN pip install --no-cache-dir pymupdf
 
 # Copy the current directory contents into the container at /app
-COPY . /app
+COPY . .
 
 # Install any needed packages specified in requirements.txt
-RUN pip install  --no-cache-dir -r requirements.txt
+RUN pip install  --no-cache-dir -r ./requirements.txt
 
 # Make port 8000 available to the world outside this container
 EXPOSE 8000
@@ -71,7 +71,7 @@ EXPOSE 8000
 ENV NAME World
 
 
-CMD ["sh", "-c", "uvicorn upload_files:app --host 0.0.0.0 --port 8000 --workers ${NUMBER_OF_WORKERS}"]
+CMD ["sh", "-c", "uvicorn upload_files:backend_app --host 0.0.0.0 --port 8000 --workers ${NUMBER_OF_WORKERS}"]
 
 # Command to run the FastAPI application using uvicorn
 #CMD ["uvicorn", "upload_files:app", "--host", "0.0.0.0", "--port", "8000"]

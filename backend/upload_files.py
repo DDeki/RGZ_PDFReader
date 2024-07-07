@@ -14,11 +14,11 @@ username_gl = ""
 
 
 
-app = FastAPI()
+backend_app = FastAPI()
 
 # Configure CORS dynamically
 allowed_origins = os.getenv("ALLOWED_ORIGINS", "*").split(",")
-app.add_middleware(
+backend_app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
     allow_credentials=True,
@@ -65,7 +65,7 @@ def encode_pdf(stream):
     
 
 
-@app.post("/api-pdf-reader/upload/")
+@backend_app.post("/api-pdf-reader/upload/")
 async def upload_files(language_sent: str = Form(None), file: UploadFile = File(...), username: str = Form(...)):
 
     try:
@@ -93,25 +93,10 @@ async def upload_files(language_sent: str = Form(None), file: UploadFile = File(
         raise HTTPException(status_code=400, detail=f"Doslo je do greske prilikom rada sa Vasim PDF-om, molimo proverite da li je on ispravan.")
 
 
-'''async def process_file_second(file: UploadFile, use_extended: bool, language_sent: str):
-    try:
-        # Validate file MIME type
-        #allowed_mimes = {'application/pdf'}
-        #file_content = await validate_file_mime(file, allowed_mimes)
-        logger.info(f"Stigoh ovde 1: ")
-        file_content = await file.read()
-        logger.info(f"Stigoh ovde 2: ")
-        file_like_object = io.BytesIO(file_content)
-        logger.info(f"Stigoh ovde 3: ")
-        text, is_there_better, highlighted_pdf_stream = await file_to_txt(file_like_object, file.filename, use_extended, language_sent)
-        logger.info(f"Stigoh ovde 4: ")
-        return file_content, text, is_there_better, highlighted_pdf_stream
-    except Exception as e:
-        logger.error(f"An error occurred: {str(e)}", exc_info=True)
-        raise HTTPException(status_code=400, detail=f"PDF is invalid.")'''
 
 
-@app.post("/api-pdf-reader/second_upload/")
+
+@backend_app.post("/api-pdf-reader/second_upload/")
 async def second_upload_files(language_sent: str = Form(None), file: UploadFile = File(...), username: str = Form(...)):
 
     try:
