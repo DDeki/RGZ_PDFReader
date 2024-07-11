@@ -30,14 +30,11 @@ export default {
     };
   },
   mounted() {
-    console.log('MOUNTED HOME.');
+    //console.log('MOUNTED HOME.');
     const fragment = new URLSearchParams(window.location.hash.substring(1));
     if (fragment.has('state') || fragment.has('code')) {
       console.log('Cleaning up URL...');
-      //const cleanUri = window.location.origin + window.location.pathname;
-      //window.history.replaceState({}, document.title, cleanUri);
       window.history.replaceState({}, document.title, "/ocr-home");
-      //console.log('URL cleaned:', cleanUri);
     } else {
       console.log('No URL cleanup needed.');
     }
@@ -221,7 +218,7 @@ export default {
       this.backActive = false;
 
       const username = keycloak.tokenParsed.preferred_username;
-      console.log(username)
+      //console.log(username)
 
       const formData = new FormData();
       formData.append('language_sent', this.selectedLanguage);

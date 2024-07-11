@@ -17,4 +17,6 @@ echo "VUE_APP_LOGIN_PATH=${VUE_APP_LOGIN_PATH}"
 # Build the Docker image with the environment variables as build arguments, without cache
 docker build --no-cache --build-arg VUE_APP_BACKEND_PATH="${VUE_APP_BACKEND_PATH}" \
              --build-arg VUE_APP_LOGIN_PATH="${VUE_APP_LOGIN_PATH}" \
+             --build-arg VUE_APP_KEYCLOAK_REALM="${VUE_APP_KEYCLOAK_REALM}" \
+             --build-arg VUE_APP_KEYCLOAK_CLIENTID="${VUE_APP_KEYCLOAK_CLIENTID}" \
              -t rgz-ocr-frontend:latest -f Dockerfile .

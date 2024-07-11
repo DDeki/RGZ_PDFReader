@@ -60,7 +60,7 @@
 
           <div class="row">
             <div class=" col-sm-1" style="height: 20vh;" ></div>
-            <div class=" col-sm-5" style="height: 20vh;" ref="leftContent">
+            <div class=" col-sm-4" style="height: 20vh;" ref="leftContent">
               <div
                 class="drop-area"
                 @dragover.prevent
@@ -88,7 +88,7 @@
               </div>
             </div>
 
-            <div class="col-sm-6 text-center">
+            <div class="col-sm-4 text-center">
 
               <div class="row" style="max-height: 10vh;">
                 <div class="col-sm-12 text-center">
@@ -116,27 +116,32 @@
                       Engleski
                     </label>
                   </div>
-                  <button @click="sendFileToFastAPI" :disabled="isLoading || !file" class="upload-button">
-                    <span v-if="isLoading">Учитавање...</span>
-                    <span v-else>
-                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                          <path d="M12 19V6"></path>
-                          <polyline points="5 12 12 5 19 12"></polyline>
-                          <path d="M5 19h14"></path>
-                      </svg>
-                    Преведи фајл
-                    </span>
-                  </button>
-                  <button @click="clearFile" class="upload-button">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                      <path d="M19 5L5 19M5 5l14 14"></path>
-                    </svg>
-                    Уклони фајл
-                  </button>
                 </div>
               </div>
 
             </div>
+
+            <div class="col-sm-3 text-center">
+              <p><br></p>
+              <button @click="sendFileToFastAPI" :disabled="isLoading || !file" class="upload-button">
+                <span v-if="isLoading">Учитавање...</span>
+                <span v-else>
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M12 19V6"></path>
+                      <polyline points="5 12 12 5 19 12"></polyline>
+                      <path d="M5 19h14"></path>
+                  </svg>
+                Преведи фајл
+                </span>
+              </button>
+              <button @click="clearFile" class="upload-button">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M19 5L5 19M5 5l14 14"></path>
+                </svg>
+                Уклони фајл
+              </button>
+            </div>
+
           </div>
 
         </div>
