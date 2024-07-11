@@ -4,9 +4,8 @@ services:
     image: ${PROJECT_NAME}-${BACKEND_PROJECT_NAME}:latest
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.${BACKEND_PROJECT_NAME}.rule=Host(`${HOST}`) && PathPrefix(`${BACK_PATH_PREFIX}`)"
-      - "traefik.http.routers.${BACKEND_PROJECT_NAME}.entrypoints=websecure"  # Use HTTPS
-      - "traefik.http.routers.${BACKEND_PROJECT_NAME}.tls.certresolver=mytlschallenge"  # Use Let's Encrypt
+      - "traefik.http.routers.${BACKEND_PROJECT_NAME}.rule=(Host(`${HOST}`) || Host(`${HOST_IP}`)) && PathPrefix(`${BACK_PATH_PREFIX}`)"
+      - "traefik.http.routers.${BACKEND_PROJECT_NAME}.entrypoints=web"
       - "traefik.http.services.${BACKEND_PROJECT_NAME}.loadbalancer.server.port=${BACKEND_PORT}"
     volumes:
       - .:/backend
@@ -18,18 +17,13 @@ services:
       - chatbot_pdfreader_network
 
   frontend:
-    build:
-      context: ./frontend
-      args:
-        VUE_APP_BACKEND_PATH: https://${HOST}${BACK_PATH_PREFIX}
-        VUE_APP_LOGIN_PATH: ${VUE_APP_LOGIN_PATH}
+    image: ${PROJECT_NAME}-${FRONTEND_PROJECT_NAME}:latest
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.${FRONTEND_PROJECT_NAME}.rule=Host(`${HOST}`) && PathPrefix(`${FRONT_PATH_PREFIX}`)"
+      - "traefik.http.routers.${FRONTEND_PROJECT_NAME}.rule=(Host(`${HOST}`) || Host(`${HOST_IP}`)) && PathPrefix(`${FRONT_PATH_PREFIX}`)"
       - "traefik.http.middlewares.${FRONTEND_PROJECT_NAME}-stripprefix.stripprefix.prefixes=${FRONT_PATH_PREFIX}"
       - "traefik.http.routers.${FRONTEND_PROJECT_NAME}.middlewares=${FRONTEND_PROJECT_NAME}-stripprefix@docker"
-      - "traefik.http.routers.${FRONTEND_PROJECT_NAME}.entrypoints=websecure"  # Use HTTPS
-      - "traefik.http.routers.${FRONTEND_PROJECT_NAME}.tls.certresolver=mytlschallenge"  # Use Let's Encrypt
+      - "traefik.http.routers.${FRONTEND_PROJECT_NAME}.entrypoints=web"
       - "traefik.http.services.${FRONTEND_PROJECT_NAME}.loadbalancer.server.port=80"
     networks:
       - chatbot_pdfreader_network

@@ -16,6 +16,10 @@ const router = createRouter({
         requiresAuth: true
       }
     },
+    {
+      path: '/:catchAll(.*)', // catch all undefined routes
+      redirect: '/'
+    }
     // other routes...
   ]
 });
