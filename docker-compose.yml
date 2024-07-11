@@ -21,10 +21,8 @@ services:
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.${FRONTEND_PROJECT_NAME}.rule=(Host(`${HOST}`) || Host(`${HOST_IP}`)) && PathPrefix(`${FRONT_PATH_PREFIX}`)"
-      - "traefik.http.middlewares.${FRONTEND_PROJECT_NAME}-stripprefix.stripprefix.prefixes=${FRONT_PATH_PREFIX}"
-      - "traefik.http.routers.${FRONTEND_PROJECT_NAME}.middlewares=${FRONTEND_PROJECT_NAME}-stripprefix@docker"
       - "traefik.http.routers.${FRONTEND_PROJECT_NAME}.entrypoints=web"
-      - "traefik.http.services.${FRONTEND_PROJECT_NAME}.loadbalancer.server.port=80"
+      - "traefik.http.services.${FRONTEND_PROJECT_NAME}.loadbalancer.server.port=8080"
     networks:
       - chatbot_pdfreader_network
 
